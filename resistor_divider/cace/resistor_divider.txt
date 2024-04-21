@@ -1,0 +1,189 @@
+#--------------------------------------------------------------
+# CACE circuit characterization file
+#--------------------------------------------------------------
+
+name:		resistor_divider
+description: generates divide by 2 voltage on pin2
+commit:		N/A
+PDK:		sky130A
+
+cace_format:	4.0
+
+authorship {
+	designer:	saitama
+	company:	none
+	creation_date:	January 5, 2024
+	license:	Apache 2.0
+}
+
+# Paths to various files
+
+paths {
+	root:		..
+	documentation:	doc
+	schematic:	xschem
+	magic:		mag
+	layout:		gds
+	netlist:	netlist
+	testbench:	cace
+	simulation:	ngspice
+    reports:	reports
+	plots:		plots
+	logs:		ngspice/log
+}
+
+# Project dependencies
+
+dependencies {
+}
+
+# Pin names and descriptions
+
+pins {
+	name:		pin1
+	description:	higher voltage input
+	type:		signal
+	direction:	input
+	Vmin:		vdd - 0.3
+	Vmax:		vdd + 0.3
+
+ 	+
+	name:		pin2
+	description:	voltage output
+	type:		signal
+	direction:	output
+	Vmin:		vss
+	Vmax:		vdd
+
+ 	+
+	name:		pin3
+	description:	lower voltage input
+	type:		signal
+	direction:	input
+	Vmin:		vss - 0.3
+	Vmax:		vss + 0.3
+}
+
+# Default values for electrical parameter measurement conditions
+# if not otherwise specified
+
+default_conditions {
+	name:		Vvdd
+	description:	Analog power supply voltage
+	display:	vdd
+	unit:		V
+	typical:	1.8
+
+	+
+	name:		Vvss
+	description:	Analog ground
+	display:	vss
+	unit:		V
+	typical:	0
+
+	+
+	name:		temperature
+	description:	Ambient temperature
+	display:	Temp
+	unit:		{degrees}C
+	minimum:	-40
+	typical:	27
+	maximum:	130
+
+	+
+	name:		corner
+	description:	Process corner
+	display:	Corner
+	minimum:	ss
+	typical:	tt
+	maximum:	ff
+
+	+
+	name:		iterations
+	description:	Iterations to run
+	display:	Iterations
+	minimum:	1
+	maximum:	10
+	step:		linear
+	stepsize:	1
+}
+
+# List of electrical parameters to be measured and their specified limits
+
+electrical_parameters {
+	name:		dccurrent
+	description:	Current draw through analog supply
+	display:	Idd
+	unit: 		{micro}A
+	spec {
+		minimum:	any
+		typical:	170
+		maximum:	250	fail
+	}
+	simulate {
+		tool:		ngspice
+		template:	dccurrent.spice
+		format:		ascii .data null result
+	}
+	conditions {
+		name: Vvdd
+		typical: 1.8
+
+		+
+		name: temperature
+		typical: 27
+
+		+
+		name: corner
+		typical: tt
+	}
+    +
+	name:		transient_response
+	status:		skip
+	description:	Large signal transient response
+	display:	Large signal transient response (Unity gain configuration, 2Vpp)
+	unit:		mV
+	simulate {
+		tool:		ngspice
+		template:	transient.spice
+		format:		ascii .data time result Vin
+	}
+	plot {
+		filename: transient.png
+		xaxis: time
+		yaxis: result
+	}
+	variables {
+		name: time
+		display: Time
+		unit: ms
+
+		+
+		name: Vin
+		display: Vin
+		unit: V
+
+		+
+		name: result
+		display: Vout
+		unit: V
+	}
+	conditions {
+		name: Vvdd
+		typical: 1.8
+
+		+
+		name: Tmax
+		display: Simulation time
+		unit: ns
+		typical: 4000
+
+		+
+		name: temperature
+		typical: 27
+
+		+
+		name: corner
+		typical: tt
+	}
+}
