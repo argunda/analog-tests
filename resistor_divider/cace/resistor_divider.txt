@@ -140,13 +140,13 @@ electrical_parameters {
     +
 	name:		transient_response
 	status:		skip
-	description:	Large signal transient response
-	display:	Large signal transient response (Unity gain configuration, 2Vpp)
+	description:	Transient response
+	display:	signal transient response
 	unit:		mV
 	simulate {
 		tool:		ngspice
 		template:	transient.spice
-		format:		ascii .data time result Vin
+		format:		ascii .data time result Vvdd
 	}
 	plot {
 		filename: transient.png
@@ -156,29 +156,19 @@ electrical_parameters {
 	variables {
 		name: time
 		display: Time
-		unit: ms
-
-		+
-		name: Vin
-		display: Vin
-		unit: V
+		unit: ns
 
 		+
 		name: result
-		display: Vout
+		display: Voltage
+		unit: V
+
+		+
+		name: Vvdd
+		display: Voltage
 		unit: V
 	}
 	conditions {
-		name: Vvdd
-		typical: 1.8
-
-		+
-		name: Tmax
-		display: Simulation time
-		unit: ns
-		typical: 4000
-
-		+
 		name: temperature
 		typical: 27
 
