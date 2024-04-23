@@ -54,5 +54,5 @@ C {devices/res.sym} 840 -50 0 0 {name=RSUB
 value=0.01
 device=resistor}
 C {devices/gnd.sym} 840 -20 0 0 {name=l1 lab=GND}
-C {/home/sai/analog-tests/resistor_divider/xschem/resistor_divider.sym} 750 -120 0 0 {name=x1}
+C {../xschem/resistor_divider.sym} 750 -120 0 0 {name=x1}
 C {devices/lab_wire.sym} 1270 -410 2 0 {name=p25 sig_type=std_logic lab=out}
