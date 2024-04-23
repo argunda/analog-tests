@@ -1,7 +1,0 @@
-** sch_path: /home/sai/analog-tests/resistor_divider/xschem/resistor_divider.sch
-.subckt resistor_divider pin1 pin2 pin3
-*.PININFO pin1:B pin3:B pin2:B
-XR1 pin2 pin1 pin3 sky130_fd_pr__res_high_po_0p35 L=3.5 mult=1 m=1
-XR2 pin3 pin2 pin3 sky130_fd_pr__res_high_po_0p35 L=3.5 mult=1 m=1
-.ends
-.end
